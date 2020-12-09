@@ -1,1 +1,1 @@
-A simple Minecraft Launcher for m'friends.
+Electron Quick Start with some Add-Ons
