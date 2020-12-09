@@ -1,1 +1,7 @@
 node_modules
+release-builds
+.git
+dist
+yarn.lock
+.DS_Store
+.github

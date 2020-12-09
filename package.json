@@ -1,22 +1,77 @@
 {
-  "name": "electron-quick-start",
+  "name": "mc-launcher",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
-  "main": "main.js",
+  "description": "A simple Minecraft Launcher for m'friends.",
+  "main": "./src/main/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=icon.png --prune=true --out=release-builds",
+    "package-win": "electron-packager . vdscapp --overwrite --asar --platform=win32 --arch=ia32 --icon=icon.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"VDSC for Windows\"",
+    "package-linux": "electron-packager . vdscapp --overwrite --asar --platform=linux --arch=x64 --icon=icon.png --prune=true --out=release-builds",
+    "env": "cross-env NODE_ENV=dev.vdsc.app yarn compile",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder --x64 --ia32 --win --mac",
+    "dist:win32": "yarn compile && electron-builder --x64 --ia32 --win",
+    "dist:win": "yarn compile && electron-builder --x64 --win",
+    "dist:mac": "yarn compile && electron-builder --mac"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
+  "repository": "https://github.com/camjcorley/mc-launcher",
+  "keywords": [],
+  "author": "camjcorley",
   "license": "CC0-1.0",
+  "dependencies": {
+    "electron-log": "^4.2.2",
+    "electron-store": "^6.0.0",
+    "electron-updater": "^4.3.1",
+    "electron-webpack": "^2.8.2",
+    "require-from-url": "^3.1.3",
+    "webpack": "~4.44.0"
+  },
   "devDependencies": {
-    "electron": "^11.0.4"
+    "cross-env": "^7.0.2",
+    "electron": "^8.3.0",
+    "electron-builder": "^22.8.0",
+    "electron-packager": "^14.2.1",
+    "font-awesome": "^4.7.0"
+  },
+  "build": {
+    "productName": "Virtual Desktop Service Client",
+    "appId": "bar.netapp.vdsc",
+    "copyright": "Copyright © 2020 ${author}",
+    "artifactName": "VDSC Setup ${version}.${ext}",
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "https://vdsc.blob.core.windows.net/download"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "requestedExecutionLevel": "asInvoker",
+      "icon": "./src/res/icon.ico"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "zip",
+        "dmg"
+      ],
+      "icon": "./src/res/icon-mac.png"
+    },
+    "linux": {
+      "target": "deb"
+    },
+    "msi": {
+      "oneClick": false,
+      "perMachine": true
+    },
+    "nsis": {
+      "oneClick": true
+    },
+    "nsisWeb": {
+      "oneClick": true
+    }
   }
 }
